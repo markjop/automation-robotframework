@@ -1,6 +1,6 @@
 *** Settings ***
 Documentation    Automation Tests Hands On
-...              #robot --outputdir automationpractice.com/testsuites/hc/result/`date +%Y%m%d-%s` --variable BROWSER:headlesschrome automationpractice.com/testsuites/hc/TechExam.robot
+...              #robot --outputdir automationpractice.com/tests/hc/results/`date +%Y%m%d-%s` --variable BROWSER:headlesschrome automationpractice.com/tests/hc/TechExam.robot
 #Library          SeleniumLibrary
 Resource         ../../resources/automationpractice_kw.robot
 Suite Setup      Open Browser    http://automationpractice.com/    ${BROWSER}
