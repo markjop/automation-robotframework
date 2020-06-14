@@ -2,60 +2,42 @@
 Library          SeleniumLibrary
 Library          Dialogs
 Library          String
-Resource         ../../.common/resources/helper_kw.robot    #TODO refactor: consider using variables (../../.common/resources)
-Resource         home_page.robot
-
-*** Variables ***    #TODO: separate variables file
-${BROWSER}=    chrome    #firefox | headlessfirefox | chrome | headlesschrome
-${COMMON_RESOURCES}=    ../../common/resources
-
-${sign-in Button}=    css:#header > div.nav > div > div > nav > div.header_user_info > a
-
+Resource         home_page.resource
+Resource         automationpractice_var.robot
+Resource         ../../.common/resources/helper_kw.robot   #TODO: put it in page reference level
 
 *** Keywords ***
-user has no account
-    Element Should Contain    ${sign-in Button}    Sign in
+User Has No Account    #TODO: randomize account details and creation
+    Guest Home Page Is Displayed
 user navigates to "${page-url}"
     go to "${page-url}"
-homepage "${page-title}" is displayed
-    verify "${page-title}"
+homepage is displayed
+    verify "My Store" page
 user selects two (2) items and adds to cart and takes note the amount of each item
-    user selects item 1 and adds to cart and takes note the amount
-    user selects item 2 and adds to cart and takes note the amount
+    user selects item "1" and adds to cart and takes note the amount
+    user selects item "2" and adds to cart and takes note the amount
 
-user selects item 1 and adds to cart and takes note the amount
-#    Wait Until Element Is Visible    css:#homefeatured > li:nth-child(1) > div > div.left-block > div > a.product_img_link > img
-#    Scroll Element Into View    css:#homefeatured > li:nth-child(1) > div > div.left-block > div > a.product_img_link > img
-    Execute JavaScript    document.querySelector('#homefeatured > li:nth-child(1) > div > div.left-block > div > a.product_img_link > img').scrollIntoView(true)
-    Mouse Over    css:#homefeatured > li:nth-child(1) > div > div.left-block > div > a.product_img_link > img
-    ${item1}=    Get Text    css:#homefeatured > li:nth-child(1) > div > div.left-block > div > div.content_price > span
-    ${item1}=    Remove String    ${item1}    $
-#    ${item1}=    convert to number    ${item1}
-#    ${item1}=    convert to integer    ${item1}
-    Set Test Variable    ${item1}
-    click "css:#homefeatured > li:nth-child(1) > div > div.right-block > div.button-container > a.button.ajax_add_to_cart_button.btn.btn-default > span"
-    # user clicks continue shopping
-    click "css:#layer_cart > div.clearfix > div.layer_cart_cart.col-xs-12.col-md-6 > div.button-container > span > span"
-user selects item 2 and adds to cart and takes note the amount
-    Scroll Element Into View    css:#homefeatured > li:nth-child(2) > div > div.left-block > div > a.product_img_link > img
-    Mouse Over    css:#homefeatured > li:nth-child(2) > div > div.left-block > div > a.product_img_link > img
-    ${item2}=    Get Text    css:#homefeatured > li:nth-child(2) > div > div.left-block > div > div.content_price > span
-    ${item2}=    Remove String    ${item2}    $
-#    ${item2}=    convert to number    ${item2}
-#    ${item2}=    convert to integer    ${item2}
-    Set Test Variable    ${item2}
-    click "css:#homefeatured > li:nth-child(2) > div > div.right-block > div.button-container > a.button.ajax_add_to_cart_button.btn.btn-default > span"
+user selects item "${rank}" and adds to cart and takes note the amount
+    Get price of number "${rank}" popular item
+    Click Add to cart Button of number "${rank}" popular item
+
     # note the total amount
     Wait Until Element Is Visible    css:#layer_cart > div.clearfix > div.layer_cart_cart.col-xs-12.col-md-6 > div:nth-child(2) > span
     ${total}=    Get Text    css:#layer_cart > div.clearfix > div.layer_cart_cart.col-xs-12.col-md-6 > div:nth-child(2) > span
     ${total}=    Remove String    ${total}    $
     Set Test Variable    ${total}
+
+    # user clicks continue shopping
+    click "css:#layer_cart > div.clearfix > div.layer_cart_cart.col-xs-12.col-md-6 > div.button-container > span > span"
+
 two items are added in the cart
-    Wait Until Element Is Visible    css:#layer_cart > div.clearfix > div.layer_cart_cart.col-xs-12.col-md-6 > h2 > span.ajax_cart_product_txt_s.unvisible
-    Element Should Contain    css:#layer_cart > div.clearfix > div.layer_cart_cart.col-xs-12.col-md-6 > h2 > span.ajax_cart_product_txt_s.unvisible    2
+#    Wait Until Element Is Visible    css:#layer_cart > div.clearfix > div.layer_cart_cart.col-xs-12.col-md-6 > h2 > span.ajax_cart_product_txt_s.unvisible
+#    Element Should Contain    css:#layer_cart > div.clearfix > div.layer_cart_cart.col-xs-12.col-md-6 > h2 > span.ajax_cart_product_txt_s.unvisible    2
+    no operation
 
 user proceeds to checkout
-    click "css:#layer_cart > div.clearfix > div.layer_cart_cart.col-xs-12.col-md-6 > div.button-container > a > span"
+    Execute JavaScript    document.querySelector('#header > div:nth-child(3) > div > div > div:nth-child(3) > div > a').scrollIntoView(true)
+    click "css:#header > div:nth-child(3) > div > div > div:nth-child(3) > div > a"
 
 shopping cart summary is displayed
     Wait Until Page Contains    Shopping-cart summary
@@ -69,7 +51,7 @@ total product cost is correct
     ${final-total}=    Get Text    css:#total_product
     ${final-total}=    Remove String    ${final-total}    $
 
-    Should Be Equal    ${item1}    ${final-item1}
-    Should Be Equal    ${item2}    ${final-item2}
+    Should Be Equal    ${item_price1}    ${final-item1}
+    Should Be Equal    ${item_price2}    ${final-item2}
     Should Be Equal    ${total}    ${final-total}
 

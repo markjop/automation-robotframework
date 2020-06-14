@@ -12,7 +12,7 @@ go to "${page-url}"
     Set Selenium Speed    0.2
 #    Maximize Browser Window    #for windows only
 
-verify "${page-title}"
+verify "${page-title}" page
     [Documentation]    SELECT the opened browser with the *title*
     Switch Window       ${page-title}
     Title Should Be     ${page-title}
