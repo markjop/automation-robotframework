@@ -11,6 +11,7 @@ Guest Home Page Is Displayed
     verify "My Store" page
     Element Should Contain  ${SignIn Button}    Sign in
 
+
 Authenticated Home Page is Displayed
     verify "My Store" page
     Element Should Contain  ${SignOut Button}    Sign Out

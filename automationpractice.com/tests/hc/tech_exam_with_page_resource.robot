@@ -6,9 +6,10 @@ Resource         ../../resources/automationpractice_kw.robot
 Suite Setup      Open Browser    http://automationpractice.com/    ${BROWSER}
 Test Teardown    Run Keywords    Capture Page Screenshot
 ...              AND             Close Browser
+Suite Teardown    Close Browser
 
 *** Test Cases ***
-DemoTest101
+Scenario: Add to cart and validate
     [Tags]    DemoTest101
     [Documentation]     Test Description:   Add two items in the cart and validate |
     ...                 Expected Result:    Total product cost is correct
