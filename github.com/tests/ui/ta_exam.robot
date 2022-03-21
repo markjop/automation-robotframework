@@ -1,8 +1,7 @@
 *** Settings ***
-Documentation    Automation Tests Hands On
+Documentation    Automation Tests Hands On (UI)
 ...              # sample run cmd: robot --outputdir github.com/tests/ui/results/`date +%Y%m%d-%s` --variable BROWSER:chrome github.com/tests/ui/ta_exam.robot
 Resource         ../../resources/github_kw.robot
-Resource         ../../../.common/resources/helper_kw.robot
 Suite Setup      Open Browser    http://google.com/    ${BROWSER}
 Test Teardown    Run Keywords    Capture Page Screenshot
 ...              AND             Close Browser
